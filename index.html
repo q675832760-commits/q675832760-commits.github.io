@@ -23,21 +23,53 @@
         .dashboard-stats h3 { color: var(--text-light); font-size: 14px; margin-bottom: 5px; }
         .dashboard-stats span { font-size: 28px; font-weight: bold; color: var(--primary-blue); }
         
-        .device-group-list { list-style: none; flex: 1; overflow-y: auto; }
-        .group-item { padding: 12px 10px; border-bottom: 1px solid #f0f0f0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; border-radius: 4px; }
-        .group-item:hover { background: #f4f6f8; }
-        .group-item.active { background: #e3eaf3; border-right: 3px solid var(--primary-blue); }
-        .group-item .info { display: flex; flex-direction: column; flex:1; overflow: hidden; }
-        .group-item .name { font-size: 16px; font-weight: 600; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .group-item .sub-count { font-size: 13px; color: var(--text-light); margin-top: 4px; }
+        .nav-header { margin-bottom: 15px; }
+        .nav-header h3 { color: var(--text-dark); font-size: 16px; }
 
+        /* 侧边栏 - 车间列表 */
+        .factory-list { list-style: none; flex: 1; overflow-y: auto; }
+        .factory-item { padding: 12px 10px; border-bottom: 1px solid #f0f0f0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; border-radius: 4px; }
+        .factory-item:hover { background: #f4f6f8; }
+        .factory-item.active { background: #e3eaf3; border-right: 3px solid var(--primary-blue); }
+        .factory-item .info { display: flex; flex-direction: column; flex:1; overflow: hidden; }
+        .factory-item .name { font-size: 16px; font-weight: 600; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .factory-item .sub-count { font-size: 13px; color: var(--text-light); margin-top: 4px; }
+
+        /* 右侧主内容区 */
         .main-content { flex: 1; background: var(--bg-gray); overflow-y: auto; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         
+        /* 车间详情（设备组列表） */
+        .factory-detail-container { width: 100%; max-width: 600px; background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; margin: 0 auto; }
+        .factory-detail-header { background: var(--primary-blue); color: #fff; padding: 30px 20px; text-align: center; position: relative; }
+        .factory-detail-header h2 { font-size: 22px; font-weight: 600; }
+        .factory-detail-header .back-btn { position: absolute; top: 15px; left: 15px; color: #fff; background: rgba(255,255,255,0.2); border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .factory-detail-header .back-btn:hover { background: rgba(255,255,255,0.4); }
+        
+        .sub-group-section { padding: 20px; border-bottom: 8px solid var(--bg-gray); }
+        .sub-group-section .section-title { font-size: 16px; font-weight: 600; color: var(--text-dark); margin-bottom: 15px; }
+        
+        .sub-group-list { list-style: none; }
+        .sub-group-item { padding: 12px 10px; border-bottom: 1px solid #f5f5f5; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-radius: 4px; transition: 0.2s; }
+        .sub-group-item:hover { background: #f4f6f8; }
+        .sub-group-item.active { background: #e3eaf3; }
+        .sub-group-item .info { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+        .sub-group-item .name { font-size: 15px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sub-group-item .sub-count { font-size: 12px; color: var(--text-light); }
+
+        /* 设备组详情（设备列表）- 复用原有样式 */
+        .group-detail-container { width: 100%; max-width: 600px; background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; margin: 0 auto; }
+        .group-detail-header { background: var(--primary-blue); color: #fff; padding: 30px 20px; text-align: center; position: relative; }
+        .group-detail-header h2 { font-size: 22px; font-weight: 600; }
+        .group-detail-header .back-btn { position: absolute; top: 15px; left: 15px; color: #fff; background: rgba(255,255,255,0.2); border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .group-detail-header .back-btn:hover { background: rgba(255,255,255,0.4); }
+        
+        /* 设备详情 - 复用原有样式 */
         .detail-container { width: 100%; max-width: 600px; background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; height: fit-content; margin: 0 auto; }
         .detail-header { background: var(--primary-blue); color: #fff; padding: 40px 20px; text-align: center; position: relative; }
         .detail-header h2 { font-size: 22px; font-weight: 600; }
-        .back-to-group-btn { position: absolute; top: 15px; left: 15px; color: #fff; background: rgba(255,255,255,0.2); border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 14px; }
-        .back-to-group-btn:hover { background: rgba(255,255,255,0.4); }
+        .detail-header .back-btn { position: absolute; top: 15px; left: 15px; color: #fff; background: rgba(255,255,255,0.2); border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .detail-header .back-btn:hover { background: rgba(255,255,255,0.4); }
+        .detail-header .breadcrumb { position: absolute; bottom: 12px; left: 0; right: 0; text-align: center; color: rgba(255,255,255,0.7); font-size: 13px; }
         
         .device-main-img { width: 100%; height: 200px; background: #d8d8d8; display: flex; align-items: center; justify-content: center; color: #666; overflow: hidden; position: relative; }
         .device-main-img img { width: 100%; height: 100%; object-fit: contain; }
@@ -79,15 +111,15 @@
             <span id="totalDevices">0</span> 台
         </div>
         <div class="nav-header">
-            <h3>设备组</h3>
+            <h3>车间列表</h3>
         </div>
-        <ul class="device-group-list" id="groupList"></ul>
+        <ul class="factory-list" id="factoryList"></ul>
     </div>
 
     <div class="main-content">
         <div id="mainContainer" style="width:100%; display:flex; justify-content:center; align-items:flex-start; flex-direction: column;">
             <div id="emptyState" class="text-center" style="padding: 50px; color: #999; width:100%;">
-                <p>正在加载数据...</p>
+                <p>请从左侧选择一个车间查看详情</p>
             </div>
         </div>
     </div>
@@ -95,20 +127,49 @@
 
 <script>
     // ==========================================
-    // 诊断确认
-    // ==========================================
-    console.log("✅ 脚本开始执行，数据加载启动...");
-
-    // ==========================================
-    // 1. 数据与配置区 (修复了语法错误)
+    // 1. 数据与配置区 (新增顶层结构)
     // ==========================================
     
     // 📌 图片地址映射表 (d1 到 d38)
     const imageMap = {
-        "d1": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/DCC37.jpg", "d2": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/DCC38.jpg", "d3": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/DCC39.jpg", "d4": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/DCC40.jpg", "d5": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/BD1.jpg", "d6": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/BD2.jpg", "d7": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/BD3.jpg", "d8": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ37A.jpg", "d9": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ37B.jpg", "d10": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ38A.jpg",
-        "d11": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ38B.jpg", "d12": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ39A.jpg", "d13": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ39B.jpg", "d14": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ40A.jpg", "d15": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ40B.jpg", "d16": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ1A.jpg", "d17": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ1B.jpg", "d18": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ2A.jpg", "d19": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ2B.jpg", "d20": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ3A.jpg",
-        "d21": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ3B.jpg", "d22": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/JSJ1.jpg", "d23": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/JSJ1.jpg", "d24": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/JSJ1.jpg", "d25": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/JSJ2.jpg", "d26": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/JSJ2.jpg", "d27": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/JSJ2.jpg", "d28": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/PDJ37.jpg", "d29": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/PDJ38.jpg", "d30": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/PDJ39.jpg",
-        "d31": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/PDJ40.jpg", "d32": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WP37.jpg", "d33": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WP38.jpg", "d34": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WP39.jpg", "d35": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WP40.jpg", "d36": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WP1.jpg", "d37": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WP2.jpg", "d38": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WP3.jpg"
+        "d1": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/DCC37.jpg", 
+        "d2": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/DCC38.jpg", 
+        "d3": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/DCC39.jpg", 
+        "d4": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/DCC40.jpg", 
+        "d5": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/BD1.jpg", 
+        "d6": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/BD2.jpg", 
+        "d7": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/BD3.jpg", 
+        "d8": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ37A.jpg", 
+        "d9": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ37B.jpg", 
+        "d10": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ38A.jpg",
+        "d11": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ38B.jpg", 
+        "d12": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ39A.jpg", 
+        "d13": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ39B.jpg", 
+        "d14": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ40A.jpg", 
+        "d15": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ40B.jpg", 
+        "d16": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ1A.jpg", 
+        "d17": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ1B.jpg", 
+        "d18": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ2A.jpg", 
+        "d19": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ2B.jpg", 
+        "d20": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ3A.jpg",
+        "d21": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/GBJ3B.jpg", 
+        "d22": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/JSJ1.jpg", 
+        "d23": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/JSJ1.jpg", 
+        "d24": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/JSJ1.jpg", 
+        "d25": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/JSJ2.jpg", 
+        "d26": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/JSJ2.jpg", 
+        "d27": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/JSJ2.jpg", 
+        "d28": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/PDJ37.jpg", 
+        "d29": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/PDJ38.jpg", 
+        "d30": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/PDJ39.jpg",
+        "d31": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/PDJ40.jpg", 
+        "d32": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WP37.jpg", 
+        "d33": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WP38.jpg", 
+        "d34": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WP39.jpg", 
+        "d35": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WP40.jpg", 
+        "d36": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WP1.jpg", 
+        "d37": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WP2.jpg", 
+        "d38": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WP3.jpg"
     };
 
     // 📌 PDF地址映射表 (键=纯文件名，值=GitHub直链)
@@ -119,82 +180,72 @@
         "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WNII-NI-ZY-050-2025%20%E5%8D%B0%E5%B0%BC%E5%8D%8E%E6%96%B0%E9%95%8D%E4%B8%9A%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%E9%95%8D%E9%93%81%E5%8E%82%E7%94%B5%E9%99%A4%E5%B0%98%E5%8A%A0%E6%B9%BF%E6%9C%BA%E6%A3%80%E4%BF%AE%E4%BD%9C%E4%B8%9A%E6%8C%87%E5%AF%BC%E4%B9%A6%20PT%20WNII%20NI%20Prosedur%20Perbaikan%20Pugmil%20ESP.pdf",
         "WNII-NI-ZY-045-2025 除尘皮带操作作业指导书 PT WNII NI Prosedur Pengoperasian Conveyor Debu Kasar Divisi ESP.pdf": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WNII-NI-ZY-045-2025%20%E9%99%A4%E5%B0%98%E7%9A%AE%E5%B8%A6%E6%93%8D%E4%BD%9C%E4%BD%9C%E4%B8%9A%E6%8C%87%E5%AF%BC%E4%B9%A6%20PT%20WNII%20NI%20Prosedur%20Pengoperasian%20Conveyor%20Debu%20Kasar%20Divisi%20ESP.pdf",
         "WNII-NI-ZY-053-2025 电除尘尾排风机检修作业指导书 PT WNII NI Prosedur Pemeriksaan dan Perbaikan Tailing Fan Divisi ESP.pdf": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WNII-NI-ZY-053-2025%20%E7%94%B5%E9%99%A4%E5%B0%98%E5%B0%BE%E6%8E%92%E9%A3%8E%E6%9C%BA%E6%A3%80%E4%BF%AE%E4%BD%9C%E4%B8%9A%E6%8C%87%E5%AF%BC%E4%B9%A6%20PT%20WNII%20NI%20Prosedur%20Pemeriksaan%20dan%20Perbaikan%20Tailing%20Fan%20Divisi%20ESP.pdf",
-        // ⬇️ 新增的4个PDF映射已补全逗号
         "WNII-NI-ZY-051-2025 电除尘静电除尘器检修 PT WNII NI Prosedur Perbaikan Ruang Pengendapan Elektrostatis (Precipitator Chamber) ESP(2).pdf": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WNII-NI-ZY-051-2025%20%E7%94%B5%E9%99%A4%E5%B0%98%E9%9D%99%E7%94%B5%E9%99%A4%E5%B0%98%E5%99%A8%E6%A3%80%E4%BF%AE%20PT%20WNII%20NI%20Prosedur%20Perbaikan%20Ruang%20Pengendapan%20Elektrostatis%20(Precipitator%20Chamber)%20ESP(2).pdf",
         "WNII-NI-ZY-101-2025 电除尘加湿机操作作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WNII-NI-ZY-101-2025%20%E7%94%B5%E9%99%A4%E5%B0%98%E5%8A%A0%E6%B9%BF%E6%9C%BA%E6%93%8D%E4%BD%9C%E4%BD%9C%E4%B8%9A%E6%8C%87%E5%AF%BC%E4%B9%A6%20PT%20WNII%20NI%20Prosedur%20Perbaikan%20Pugmil%20ESP.pdf",
         "WNII-NI-ZY-047-2025 布袋除尘更换滤袋检修作业指导书 PT WNII NI Prosedur Kerja Pergantian Filter Bag HouseBudai ESP.pdf": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WNII-NI-ZY-047-2025%20%E5%B8%83%E8%A2%8B%E9%99%A4%E5%B0%98%E6%9B%B4%E6%8D%A2%E6%BB%A4%E8%A2%8B%E6%A3%80%E4%BF%AE%E4%BD%9C%E4%B8%9A%E6%8C%87%E5%AF%BC%E4%B9%A6%20PT%20WNII%20NI%20Prosedur%20Kerja%20Pergantian%20Filter%20Bag%20HouseBudai%20ESP.pdf",
         "WNII-NI-ZY-055-2025 电除尘阴阳极振打检修作业指导书 PT WNII NI Prosedur Perbaikan Vibrator Anoda dan Katoda ESP.pdf": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WNII-NI-ZY-055-2025%20%E7%94%B5%E9%99%A4%E5%B0%98%E9%98%B4%E9%98%B3%E6%9E%81%E6%8C%AF%E6%89%93%E6%A3%80%E4%BF%AE%E4%BD%9C%E4%B8%9A%E6%8C%87%E5%AF%BC%E4%B9%A6%20PT%20WNII%20NI%20Prosedur%20Perbaikan%20Vibrator%20Anoda%20dan%20Katoda%20ESP.pdf"
     };
 
-    // 完全硬编码的纯静态数据 (使用普通数组结构，避免浏览器解析卡顿)
-    const STATIC_GROUPS = [
+    // 原始设备组数据 (复用您已填好的完整数据)
+    const RAW_GROUPS = [
         {
-            "id": "g1",
-            "name": "ESP 电除尘器",
+            "id": "g1", "name": "ESP 电除尘器",
             "devices": [
-                { 
-                    "id": "d1", 
-                    "title": "37#ESP 电除尘器", 
-                    "meta": [
-                        { "label": "Spesifikasi 设备型号", "value": "Q235" },
-                        { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-SCQ-001" },
-                        { "label": "Voltage Secondary 额定电压", "value": "72KV" },
-                        { "label": "Volume Pengiriman 处理风量", "value": "700000m³/H" }
-                    ], 
-                    "manualList": [
-                        { "name": "WNII-NI-ZY-044-2025 电除尘操作作业指导书 PT WNII NI Prosedur Pengoperasian ESP.pdf", "size": "1831.20 KB" },
-                        // ⬇️ 这里之前漏了逗号，导致多文件无法解析，现已修复
-                        { "name": "WNII-NI-ZY-051-2025 电除尘静电除尘器检修 PT WNII NI Prosedur Perbaikan Ruang Pengendapan Elektrostatis (Precipitator Chamber) ESP(2).pdf", "size": "1635.69 KB" },
-                        { "name": "WNII-NI-ZY-055-2025 电除尘阴阳极振打检修作业指导书 PT WNII NI Prosedur Perbaikan Vibrator Anoda dan Katoda ESP.pdf", "size": "1949.69 KB" }
-                    ] 
-                },
+                { "id": "d1", "title": "37#ESP 电除尘器", "meta": [
+                    { "label": "Spesifikasi 设备型号", "value": "Q235" },
+                    { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-SCQ-001" },
+                    { "label": "Voltage Secondary 额定电压", "value": "72KV" },
+                    { "label": "Volume Pengiriman 处理风量", "value": "700000m³/H" }
+                ], "manualList": [
+                    { "name": "WNII-NI-ZY-044-2025 电除尘操作作业指导书 PT WNII NI Prosedur Pengoperasian ESP.pdf", "size": "1831.20 KB" },
+                    { "name": "WNII-NI-ZY-051-2025 电除尘静电除尘器检修 PT WNII NI Prosedur Perbaikan Ruang Pengendapan Elektrostatis (Precipitator Chamber) ESP(2).pdf", "size": "1635.69 KB" },
+                    { "name": "WNII-NI-ZY-055-2025 电除尘阴阳极振打检修作业指导书 PT WNII NI Prosedur Perbaikan Vibrator Anoda dan Katoda ESP.pdf", "size": "1949.69 KB" }
+                ] },
                 { "id": "d2", "title": "38#ESP 电除尘器", "meta": [
                     { "label": "Spesifikasi 设备型号", "value": "Q235" },
                     { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-SCQ-002" },
                     { "label": "Voltage Secondary 额定电压", "value": "72KV" },
                     { "label": "Volume Pengiriman 处理风量", "value": "700000m³/H" }
-                ], "manualList": [{ "name": "WNII-NI-ZY-044-2025 电除尘操作作业指导书 PT WNII NI Prosedur Pengoperasian ESP.pdf", "size": "1831.20 KB" },{ "name": "WNII-NI-ZY-051-2025 电除尘静电除尘器检修 PT WNII NI Prosedur Perbaikan Ruang Pengendapan Elektrostatis (Precipitator Chamber) ESP(2).pdf", "size": "1635.69 KB" },{ "name": "WNII-NI-ZY-055-2025 电除尘阴阳极振打检修作业指导书 PT WNII NI Prosedur Perbaikan Vibrator Anoda dan Katoda ESP.pdf", "size": "1949.69 KB" }] },
+                ], "manualList": [{ "name": "WNII-NI-ZY-044-2025 电除尘操作作业指导书 PT WNII NI Prosedur Pengoperasian ESP.pdf", "size": "1831.20 KB" }, { "name": "WNII-NI-ZY-051-2025 电除尘静电除尘器检修 PT WNII NI Prosedur Perbaikan Ruang Pengendapan Elektrostatis (Precipitator Chamber) ESP(2).pdf", "size": "1635.69 KB" }, { "name": "WNII-NI-ZY-055-2025 电除尘阴阳极振打检修作业指导书 PT WNII NI Prosedur Perbaikan Vibrator Anoda dan Katoda ESP.pdf", "size": "1949.69 KB" }] },
                 { "id": "d3", "title": "39#ESP 电除尘器", "meta": [
                     { "label": "Spesifikasi 设备型号", "value": "Q235" },
                     { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-SCQ-003" },
                     { "label": "Voltage Secondary 额定电压", "value": "72KV" },
                     { "label": "Volume Pengiriman 处理风量", "value": "700000m³/H" }
-                ], "manualList": [{ "name": "WNII-NI-ZY-044-2025 电除尘操作作业指导书 PT WNII NI Prosedur Pengoperasian ESP.pdf", "size": "1831.20 KB" },{ "name": "WNII-NI-ZY-051-2025 电除尘静电除尘器检修 PT WNII NI Prosedur Perbaikan Ruang Pengendapan Elektrostatis (Precipitator Chamber) ESP(2).pdf", "size": "1635.69 KB" },{ "name": "WNII-NI-ZY-055-2025 电除尘阴阳极振打检修作业指导书 PT WNII NI Prosedur Perbaikan Vibrator Anoda dan Katoda ESP.pdf", "size": "1949.69 KB" }] },
+                ], "manualList": [{ "name": "WNII-NI-ZY-044-2025 电除尘操作作业指导书 PT WNII NI Prosedur Pengoperasian ESP.pdf", "size": "1831.20 KB" }, { "name": "WNII-NI-ZY-051-2025 电除尘静电除尘器检修 PT WNII NI Prosedur Perbaikan Ruang Pengendapan Elektrostatis (Precipitator Chamber) ESP(2).pdf", "size": "1635.69 KB" }, { "name": "WNII-NI-ZY-055-2025 电除尘阴阳极振打检修作业指导书 PT WNII NI Prosedur Perbaikan Vibrator Anoda dan Katoda ESP.pdf", "size": "1949.69 KB" }] },
                 { "id": "d4", "title": "40#ESP 电除尘器", "meta": [
                     { "label": "Spesifikasi 设备型号", "value": "Q235" },
                     { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-SCQ-004" },
                     { "label": "Voltage Secondary 额定电压", "value": "72KV" },
                     { "label": "Volume Pengiriman 处理风量", "value": "700000m³/H" }
-                ], "manualList": [{ "name": "WNII-NI-ZY-044-2025 电除尘操作作业指导书 PT WNII NI Prosedur Pengoperasian ESP.pdf", "size": "1831.20 KB" },{ "name": "WNII-NI-ZY-051-2025 电除尘静电除尘器检修 PT WNII NI Prosedur Perbaikan Ruang Pengendapan Elektrostatis (Precipitator Chamber) ESP(2).pdf", "size": "1635.69 KB" },{ "name": "WNII-NI-ZY-055-2025 电除尘阴阳极振打检修作业指导书 PT WNII NI Prosedur Perbaikan Vibrator Anoda dan Katoda ESP.pdf", "size": "1949.69 KB" }] }
+                ], "manualList": [{ "name": "WNII-NI-ZY-044-2025 电除尘操作作业指导书 PT WNII NI Prosedur Pengoperasian ESP.pdf", "size": "1831.20 KB" }, { "name": "WNII-NI-ZY-051-2025 电除尘静电除尘器检修 PT WNII NI Prosedur Perbaikan Ruang Pengendapan Elektrostatis (Precipitator Chamber) ESP(2).pdf", "size": "1635.69 KB" }, { "name": "WNII-NI-ZY-055-2025 电除尘阴阳极振打检修作业指导书 PT WNII NI Prosedur Perbaikan Vibrator Anoda dan Katoda ESP.pdf", "size": "1949.69 KB" }] }
             ]
         },
         {
-            "id": "g2",
-            "name": "BUDAI 布袋除尘器",
+            "id": "g2", "name": "BUDAI 布袋除尘器",
             "devices": [
                 { "id": "d5", "title": "1#BUDAI 布袋除尘器", "meta": [
                     { "label": "Spesifikasi 设备型号", "value": "ZD-PPCSM128-2*18" },
                     { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-BD-001" },
                     { "label": "Tekanan Diferensial 负压阻力", "value": "<1700 PA" },
                     { "label": "Volume Pengiriman 处理风量", "value": "360000m³/H" }
-                ], "manualList": [{ "name": "WNII-NI-ZY-046-2025 布袋除尘操作作业指导书 PT WNII NI Prosedur Kerja Inspeksi Bag House ESP.pdf", "size": "1882.54 KB" },{ "name": "WNII-NI-ZY-047-2025 布袋除尘更换滤袋检修作业指导书 PT WNII NI Prosedur Kerja Pergantian Filter Bag HouseBudai ESP.pdf", "size": "2567.57 KB" }] },
+                ], "manualList": [{ "name": "WNII-NI-ZY-046-2025 布袋除尘操作作业指导书 PT WNII NI Prosedur Kerja Inspeksi Bag House ESP.pdf", "size": "1882.54 KB" }, { "name": "WNII-NI-ZY-047-2025 布袋除尘更换滤袋检修作业指导书 PT WNII NI Prosedur Kerja Pergantian Filter Bag HouseBudai ESP.pdf", "size": "2567.57 KB" }] },
                 { "id": "d6", "title": "2#BUDAI 布袋除尘器", "meta": [
                     { "label": "Spesifikasi 设备型号", "value": "ZD-PPCSM128-2*18" },
                     { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-BD-002" },
                     { "label": "Tekanan Diferensial 负压阻力", "value": "<1700 PA" },
                     { "label": "Volume Pengiriman 处理风量", "value": "360000m³/H" }
-                ], "manualList": [{ "name": "WNII-NI-ZY-046-2025 布袋除尘操作作业指导书 PT WNII NI Prosedur Kerja Inspeksi Bag House ESP.pdf", "size": "1882.54 KB" },{ "name": "WNII-NI-ZY-047-2025 布袋除尘更换滤袋检修作业指导书 PT WNII NI Prosedur Kerja Pergantian Filter Bag HouseBudai ESP.pdf", "size": "2567.57 KB" }] },
+                ], "manualList": [{ "name": "WNII-NI-ZY-046-2025 布袋除尘操作作业指导书 PT WNII NI Prosedur Kerja Inspeksi Bag House ESP.pdf", "size": "1882.54 KB" }, { "name": "WNII-NI-ZY-047-2025 布袋除尘更换滤袋检修作业指导书 PT WNII NI Prosedur Kerja Pergantian Filter Bag HouseBudai ESP.pdf", "size": "2567.57 KB" }] },
                 { "id": "d7", "title": "3#BUDAI 布袋除尘器", "meta": [
                     { "label": "Spesifikasi 设备型号", "value": "ZD-PPCSM128-2*18" },
                     { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-BD-003" },
                     { "label": "Tekanan Diferensial 负压阻力", "value": "<1200 PA" },
                     { "label": "Volume Pengiriman 处理风量", "value": "400000m³/H" }
-                ], "manualList": [{ "name": "WNII-NI-ZY-046-2025 布袋除尘操作作业指导书 PT WNII NI Prosedur Kerja Inspeksi Bag House ESP.pdf", "size": "1882.54 KB" },{ "name": "WNII-NI-ZY-047-2025 布袋除尘更换滤袋检修作业指导书 PT WNII NI Prosedur Kerja Pergantian Filter Bag HouseBudai ESP.pdf", "size": "2567.57 KB" }] }
+                ], "manualList": [{ "name": "WNII-NI-ZY-046-2025 布袋除尘操作作业指导书 PT WNII NI Prosedur Kerja Inspeksi Bag House ESP.pdf", "size": "1882.54 KB" }, { "name": "WNII-NI-ZY-047-2025 布袋除尘更换滤袋检修作业指导书 PT WNII NI Prosedur Kerja Pergantian Filter Bag HouseBudai ESP.pdf", "size": "2567.57 KB" }] }
             ]
         },
         {
-            "id": "g3",
-            "name": "SCRAPER 刮板机",
+            "id": "g3", "name": "SCRAPER 刮板机",
             "devices": [
                 { "id": "d8", "title": "37#A SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "FU350" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-003" }, { "label": "Daya Motor 电机功率", "value": "15KW" }, { "label": "Volume Pengiriman 输送量", "value": "80m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "size": "3674.17 KB" }] },
                 { "id": "d9", "title": "37#B SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "FU350" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-004" }, { "label": "Daya Motor 电机功率", "value": "15KW" }, { "label": "Volume Pengiriman 输送量", "value": "80m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "size": "3674.17 KB" }] },
@@ -213,20 +264,18 @@
             ]
         },
         {
-            "id": "g4",
-            "name": "Pugmill 加湿机",
+            "id": "g4", "name": "Pugmill 加湿机",
             "devices": [
-                { "id": "d22", "title": "1#-1Pugmill 加湿机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-001" }, { "label": "Daya Motor 电机功率", "value": "22KW" }, { "label": "Volume Pengiriman 输送量", "value": "80m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "4205.61 KB" },{ "name": "WNII-NI-ZY-101-2025 电除尘加湿机操作作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "3296.52 KB" }] },
-                { "id": "d23", "title": "1#-2Pugmill 加湿机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-002" }, { "label": "Daya Motor 电机功率", "value": "22KW" }, { "label": "Volume Pengiriman 输送量", "value": "80m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "4205.61 KB" },{ "name": "WNII-NI-ZY-101-2025 电除尘加湿机操作作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "3296.52 KB" }] },
-                { "id": "d24", "title": "1#-3Pugmill 加湿机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-003" }, { "label": "Daya Motor 电机功率", "value": "22KW" }, { "label": "Volume Pengiriman 输送量", "value": "80m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "4205.61 KB" },{ "name": "WNII-NI-ZY-101-2025 电除尘加湿机操作作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "3296.52 KB" }] },
-                { "id": "d25", "title": "2#-1Pugmill 加湿机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-004" }, { "label": "Daya Motor 电机功率", "value": "22KW" }, { "label": "Volume Pengiriman 输送量", "value": "80m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "4205.61 KB" },{ "name": "WNII-NI-ZY-101-2025 电除尘加湿机操作作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "3296.52 KB" }] },
-                { "id": "d26", "title": "2#-2Pugmill 加湿机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-005" }, { "label": "Daya Motor 电机功率", "value": "22KW" }, { "label": "Volume Pengiriman 输送量", "value": "80m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "4205.61 KB" },{ "name": "WNII-NI-ZY-101-2025 电除尘加湿机操作作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "3296.52 KB" }] },
-                { "id": "d27", "title": "2#-3Pugmill 加湿机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-006" }, { "label": "Daya Motor 电机功率", "value": "22KW" }, { "label": "Volume Pengiriman 输送量", "value": "80m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "4205.61 KB" },{ "name": "WNII-NI-ZY-101-2025 电除尘加湿机操作作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "3296.52 KB" }] }
+                { "id": "d22", "title": "1#-1Pugmill 加湿机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-001" }, { "label": "Daya Motor 电机功率", "value": "22KW" }, { "label": "Volume Pengiriman 输送量", "value": "80m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "4205.61 KB" }, { "name": "WNII-NI-ZY-101-2025 电除尘加湿机操作作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "3296.52 KB" }] },
+                { "id": "d23", "title": "1#-2Pugmill 加湿机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-002" }, { "label": "Daya Motor 电机功率", "value": "22KW" }, { "label": "Volume Pengiriman 输送量", "value": "80m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "4205.61 KB" }, { "name": "WNII-NI-ZY-101-2025 电除尘加湿机操作作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "3296.52 KB" }] },
+                { "id": "d24", "title": "1#-3Pugmill 加湿机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-003" }, { "label": "Daya Motor 电机功率", "value": "22KW" }, { "label": "Volume Pengiriman 输送量", "value": "80m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "4205.61 KB" }, { "name": "WNII-NI-ZY-101-2025 电除尘加湿机操作作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "3296.52 KB" }] },
+                { "id": "d25", "title": "2#-1Pugmill 加湿机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-004" }, { "label": "Daya Motor 电机功率", "value": "22KW" }, { "label": "Volume Pengiriman 输送量", "value": "80m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "4205.61 KB" }, { "name": "WNII-NI-ZY-101-2025 电除尘加湿机操作作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "3296.52 KB" }] },
+                { "id": "d26", "title": "2#-2Pugmill 加湿机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-005" }, { "label": "Daya Motor 电机功率", "value": "22KW" }, { "label": "Volume Pengiriman 输送量", "value": "80m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "4205.61 KB" }, { "name": "WNII-NI-ZY-101-2025 电除尘加湿机操作作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "3296.52 KB" }] },
+                { "id": "d27", "title": "2#-3Pugmill 加湿机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-006" }, { "label": "Daya Motor 电机功率", "value": "22KW" }, { "label": "Volume Pengiriman 输送量", "value": "80m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "4205.61 KB" }, { "name": "WNII-NI-ZY-101-2025 电除尘加湿机操作作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "size": "3296.52 KB" }] }
             ]
         },
         {
-            "id": "g5",
-            "name": "Conveyor 皮带机",
+            "id": "g5", "name": "Conveyor 皮带机",
             "devices": [
                 { "id": "d28", "title": "37#Conveyor 皮带机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "DTIIA-800mm*35m" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-PDG-001" }, { "label": "Daya Motor 电机功率", "value": "7.5KW" }, { "label": "Volume Pengiriman 输送量", "value": "400T/H" }], "manualList": [{ "name": "WNII-NI-ZY-045-2025 除尘皮带操作作业指导书 PT WNII NI Prosedur Pengoperasian Conveyor Debu Kasar Divisi ESP.pdf", "size": "3424.62 KB" }] },
                 { "id": "d29", "title": "38#Conveyor 皮带机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "DTIIA-800mm*35m" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-PDG-002" }, { "label": "Daya Motor 电机功率", "value": "7.5KW" }, { "label": "Volume Pengiriman 输送量", "value": "400T/H" }], "manualList": [{ "name": "WNII-NI-ZY-045-2025 除尘皮带操作作业指导书 PT WNII NI Prosedur Pengoperasian Conveyor Debu Kasar Divisi ESP.pdf", "size": "3424.62 KB" }] },
@@ -235,8 +284,7 @@
             ]
         },
         {
-            "id": "g6",
-            "name": "Ceiling Fan 尾排风机",
+            "id": "g6", "name": "Ceiling Fan 尾排风机",
             "devices": [
                 { "id": "d32", "title": "37#Ceiling Fan 尾排风机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "Y4-2X73-14 旋向L" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-WPFJ-002" }, { "label": "Daya Motor 电机功率", "value": "1400KW" }, { "label": "Volume Pengiriman 流量容积", "value": "720000m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-053-2025 电除尘尾排风机检修作业指导书 PT WNII NI Prosedur Pemeriksaan dan Perbaikan Tailing Fan Divisi ESP.pdf", "size": "4472.70 KB" }] },
                 { "id": "d33", "title": "38#Ceiling Fan 尾排风机", "meta": [{ "label": "Spesifikasi 设备型号", "value": "Y4-2X73-14 旋向R" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-WPFJ-003" }, { "label": "Daya Motor 电机功率", "value": "1400KW" }, { "label": "Volume Pengiriman 流量容积", "value": "720000m³/H" }], "manualList": [{ "name": "WNII-NI-ZY-053-2025 电除尘尾排风机检修作业指导书 PT WNII NI Prosedur Pemeriksaan dan Perbaikan Tailing Fan Divisi ESP.pdf", "size": "4472.70 KB" }] },
@@ -249,24 +297,37 @@
         }
     ];
 
-    console.log("✅ 数据已就绪，加载成功! (可直接在控制台输入 console.log(STATIC_GROUPS) 查看完整数据)");
+    // 构建顶层数据：将6个设备组放入一个统一“工厂”中
+    const STATIC_FACTORIES = [
+        {
+            "id": "f1",
+            "name": "Tim operasional ESP 电除尘班组",
+            "groups": RAW_GROUPS
+        }
+    ];
 
     // ==========================================
-    // 2. 纯渲染逻辑 (完全静态)
+    // 2. 渲染逻辑 (新增顶层结构)
     // ==========================================
-    let groups = STATIC_GROUPS;
+    let factories = STATIC_FACTORIES;
+    let currentFactoryId = null;
     let currentGroupId = null;
     let currentDeviceId = null;
 
-    function getGroup(id) { return groups.find(g => g.id === id); }
-    function getDevice(groupId, deviceId) {
-        const group = getGroup(groupId);
+    function getFactory(id) { return factories.find(f => f.id === id); }
+    function getGroup(factoryId, groupId) {
+        const factory = getFactory(factoryId);
+        if (!factory) return null;
+        return factory.groups.find(g => g.id === groupId);
+    }
+    function getDevice(factoryId, groupId, deviceId) {
+        const group = getGroup(factoryId, groupId);
         if (!group) return null;
         return group.devices.find(d => d.id === deviceId);
     }
     function getCurrentDevice() {
-        if (!currentGroupId || !currentDeviceId) return null;
-        return getDevice(currentGroupId, currentDeviceId);
+        if (!currentFactoryId || !currentGroupId || !currentDeviceId) return null;
+        return getDevice(currentFactoryId, currentGroupId, currentDeviceId);
     }
 
     function renderAll() {
@@ -277,21 +338,21 @@
 
     function renderDashboard() {
         let totalDevices = 0;
-        groups.forEach(g => totalDevices += (g.devices ? g.devices.length : 0));
+        factories.forEach(f => f.groups.forEach(g => totalDevices += (g.devices ? g.devices.length : 0)));
         document.getElementById('totalDevices').innerText = totalDevices;
     }
 
     function renderSidebar() {
-        const list = document.getElementById('groupList');
+        const list = document.getElementById('factoryList');
         list.innerHTML = '';
-        groups.forEach(group => {
+        factories.forEach(factory => {
             const li = document.createElement('li');
-            li.className = `group-item ${group.id === currentGroupId ? 'active' : ''}`;
-            const subCount = group.devices ? group.devices.length : 0;
+            li.className = `factory-item ${factory.id === currentFactoryId ? 'active' : ''}`;
+            let totalSubGroups = factory.groups ? factory.groups.length : 0;
             li.innerHTML = `
-                <div onclick="selectGroup('${group.id}')" class="info">
-                    <div class="name">${group.name || '未命名组'}</div>
-                    <div class="sub-count">${subCount} 台设备</div>
+                <div onclick="selectFactory('${factory.id}')" class="info">
+                    <div class="name">${factory.name}</div>
+                    <div class="sub-count">${totalSubGroups} 个设备组</div>
                 </div>
             `;
             list.appendChild(li);
@@ -300,25 +361,64 @@
 
     function renderMainContent() {
         const container = document.getElementById('mainContainer');
-        if (currentGroupId && currentDeviceId) {
+        
+        if (currentFactoryId && currentGroupId && currentDeviceId) {
             renderDeviceDetail(container);
             return;
         }
-        if (currentGroupId) {
+        if (currentFactoryId && currentGroupId) {
             renderGroupDetail(container);
             return;
         }
-        container.innerHTML = `<div class="text-center" style="padding: 50px; color: #999; width:100%;"><p>请从左侧选择一个设备组查看详情。</p></div>`;
+        if (currentFactoryId) {
+            renderFactoryDetail(container);
+            return;
+        }
+        
+        container.innerHTML = `<div class="text-center" style="padding: 50px; color: #999; width:100%;"><p>请从左侧选择一个车间查看详情</p></div>`;
     }
 
+    // 1. 车间详情页（显示设备组列表）
+    function renderFactoryDetail(container) {
+        const factory = getFactory(currentFactoryId);
+        if (!factory) { currentFactoryId = null; renderAll(); return; }
+        const groups = factory.groups || [];
+
+        container.innerHTML = `
+            <div class="factory-detail-container">
+                <div class="factory-detail-header">
+                    <h2>${factory.name}</h2>
+                </div>
+                <div class="sub-group-section">
+                    <div class="section-title">
+                        <span>设备组 (${groups.length})</span>
+                    </div>
+                    <ul class="sub-group-list">
+                        ${groups.length === 0 ? '<div class="text-center" style="padding: 20px; color: #999;">该车间暂无设备组</div>' : ''}
+                        ${groups.map(group => `
+                            <li class="sub-group-item">
+                                <div onclick="selectGroup('${factory.id}', '${group.id}')" class="info">
+                                    <div class="name">${group.name || '未命名组'}</div>
+                                    <div class="sub-count">${group.devices ? group.devices.length : 0} 台设备</div>
+                                </div>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            </div>
+        `;
+    }
+
+    // 2. 设备组详情（显示设备列表）
     function renderGroupDetail(container) {
-        const group = getGroup(currentGroupId);
+        const group = getGroup(currentFactoryId, currentGroupId);
         if (!group) { currentGroupId = null; renderAll(); return; }
         const devices = group.devices || [];
 
         container.innerHTML = `
             <div class="group-detail-container">
                 <div class="group-detail-header">
+                    <button class="back-btn" onclick="goBackToFactory()">← 返回车间</button>
                     <h2>${group.name}</h2>
                 </div>
                 <div class="sub-device-section">
@@ -329,7 +429,7 @@
                         ${devices.length === 0 ? '<div class="text-center" style="padding: 20px; color: #999;">该组暂无设备</div>' : ''}
                         ${devices.map(device => `
                             <li class="sub-device-item">
-                                <div onclick="selectDevice('${group.id}', '${device.id}')" class="info">
+                                <div onclick="selectDevice('${currentFactoryId}', '${currentGroupId}', '${device.id}')" class="info">
                                     <div class="name">${device.title || '未命名'}</div>
                                     <div class="code">${device.meta.find(m => m.label === 'Nomor Peralatan设备编号')?.value || '无编号'}</div>
                                 </div>
@@ -341,9 +441,12 @@
         `;
     }
 
+    // 3. 设备详情（完整信息）
     function renderDeviceDetail(container) {
         const device = getCurrentDevice();
         if (!device) { currentDeviceId = null; renderAll(); return; }
+        const factory = getFactory(currentFactoryId);
+        const group = getGroup(currentFactoryId, currentGroupId);
 
         const sectionsHtml = [];
         sectionsHtml.push(`
@@ -358,9 +461,8 @@
             </div>
         `);
 
-        // 处理多个 PDF 文件
+        // 处理 PDF
         const hasManual = device.manualList && device.manualList.length > 0;
-        
         let fileHtml = '';
         if (hasManual) {
             device.manualList.forEach(manual => {
@@ -401,8 +503,9 @@
         container.innerHTML = `
             <div class="detail-container">
                 <div class="detail-header">
-                    <button class="back-to-group-btn" onclick="goBackToGroup()">← 返回设备组</button>
+                    <button class="back-btn" onclick="goBackToGroup()">← 返回设备组</button>
                     <h2>${device.title}</h2>
+                    <div class="breadcrumb">${factory.name} &gt; ${group.name}</div>
                 </div>
                 <div class="device-main-img">
                     ${imgUrl ? `<img src="${imgUrl}" alt="${device.title}">` : `<span>暂无图片</span>`}
@@ -413,12 +516,39 @@
     }
 
     // ==========================================
-    // 3. 交互与文件预览/下载
+    // 3. 交互
     // ==========================================
-    function selectGroup(id) { currentGroupId = id; currentDeviceId = null; renderAll(); }
-    function selectDevice(groupId, deviceId) { currentGroupId = groupId; currentDeviceId = deviceId; renderAll(); }
-    function goBackToGroup() { currentDeviceId = null; renderAll(); }
+    function selectFactory(id) {
+        currentFactoryId = id;
+        currentGroupId = null;
+        currentDeviceId = null;
+        renderAll();
+    }
+    function selectGroup(factoryId, groupId) {
+        currentFactoryId = factoryId;
+        currentGroupId = groupId;
+        currentDeviceId = null;
+        renderAll();
+    }
+    function selectDevice(factoryId, groupId, deviceId) {
+        currentFactoryId = factoryId;
+        currentGroupId = groupId;
+        currentDeviceId = deviceId;
+        renderAll();
+    }
+    function goBackToFactory() {
+        currentGroupId = null;
+        currentDeviceId = null;
+        renderAll();
+    }
+    function goBackToGroup() {
+        currentDeviceId = null;
+        renderAll();
+    }
 
+    // ==========================================
+    // 4. 文件预览/下载
+    // ==========================================
     function previewFile(url) {
         if (!url) return alert("请先在代码顶部的 pdfMap 中填入正确的 PDF 网络地址！");
         const win = window.open();
@@ -432,10 +562,10 @@
     }
 
     // ==========================================
-    // 4. 启动应用
+    // 5. 启动应用
     // ==========================================
     renderAll();
-    console.log("✅ 页面渲染完成，左侧列表已展示。");
+    console.log("✅ 系统启动成功，左侧车间列表已展示。");
 </script>
 </body>
 </html>
