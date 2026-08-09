@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备信息管理系统 </title>
+    <style>
+        :root {
+            --primary-blue: #1b3f89;
+            --bg-gray: #f2f3f5;
+            --text-dark: #333;
+            --text-light: #666;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        body { background-color: var(--bg-gray); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        
+        #app { display: flex; height: 100vh; width: 100%; }
+        
+        .sidebar { width: 280px; background: #fff; border-right: 1px solid #eaeaea; display: flex; flex-direction: column; padding: 20px; overflow-y: auto; flex-shrink: 0; }
+        .app-title { font-size: 20px; font-weight: bold; color: var(--primary-blue); margin-bottom: 20px; padding: 10px; border-radius: 4px; }
+        .dashboard-stats { background: #eef3fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; }
+        .dashboard-stats h3 { color: var(--text-light); font-size: 14px; margin-bottom: 5px; }
+        .dashboard-stats span { font-size: 28px; font-weight: bold; color: var(--primary-blue); }
+        
+        .device-group-list { list-style: none; flex: 1; overflow-y: auto; }
+        .group-item { padding: 12px 10px; border-bottom: 1px solid #f0f0f0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; border-radius: 4px; }
+        .group-item:hover { background: #f4f6f8; }
+        .group-item.active { background: #e3eaf3; border-right: 3px solid var(--primary-blue); }
+        .group-item .info { display: flex; flex-direction: column; flex:1; overflow: hidden; }
+        .group-item .name { font-size: 16px; font-weight: 600; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .group-item .sub-count { font-size: 13px; color: var(--text-light); margin-top: 4px; }
+
+        .main-content { flex: 1; background: var(--bg-gray); overflow-y: auto; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        
+        .detail-container { width: 100%; max-width: 600px; background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; height: fit-content; margin: 0 auto; }
+        .detail-header { background: var(--primary-blue); color: #fff; padding: 40px 20px; text-align: center; position: relative; }
+        .detail-header h2 { font-size: 22px; font-weight: 600; }
+        .back-to-group-btn { position: absolute; top: 15px; left: 15px; color: #fff; background: rgba(255,255,255,0.2); border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .back-to-group-btn:hover { background: rgba(255,255,255,0.4); }
+        
+        .device-main-img { width: 100%; height: 200px; background: #d8d8d8; display: flex; align-items: center; justify-content: center; color: #666; overflow: hidden; position: relative; }
+        .device-main-img img { width: 100%; height: 100%; object-fit: contain; }
+        
+        .section { padding: 20px; border-bottom: 8px solid var(--bg-gray); position: relative; }
+        .section-title { font-size: 16px; font-weight: 600; color: var(--text-dark); margin-bottom: 15px; }
+
+        .info-row { display: flex; padding: 16px 0; border-bottom: 1px solid #f5f5f5; align-items: center; }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { width: 130px; flex-shrink: 0; color: var(--text-dark); font-size: 15px; font-weight: 500; margin-right: 12px; }
+        .info-value { flex: 1; font-size: 15px; color: var(--text-dark); padding: 8px 12px; border-radius: 6px; min-height: 40px; }
+
+        .file-card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+        .file-icon { width: 40px; height: 40px; background: #ff4d4f; color: #fff; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-weight: bold; font-size: 18px; }
+        .file-info { flex: 1; display: flex; flex-direction: column; }
+        .file-name { font-weight: 500; font-size: 14px; }
+        .file-size { font-size: 12px; color: var(--text-light); }
+        .file-actions { display: flex; gap: 10px; }
+        .btn-file { background: none; border: none; color: var(--primary-blue); cursor: pointer; font-size: 13px; }
+        .btn-file:hover { text-decoration: underline; }
+        
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+
+        @media (max-width: 768px) {
+            #app { flex-direction: column; overflow: auto; }
+            .sidebar { width: 100%; max-height: 300px; border-right: none; border-bottom: 1px solid #eaeaea; }
+            .main-content { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div class="sidebar" id="sidebar">
+        <h1 class="app-title" id="appTitle">设备信息管理系统</h1>
+        <div class="dashboard-stats">
+            <h3>设备总览</h3>
+            <span id="totalDevices">0</span> 台
+        </div>
+        <div class="nav-header">
+            <h3>设备组</h3>
+        </div>
+        <ul class="device-group-list" id="groupList"></ul>
+    </div>
+
+    <div class="main-content">
+        <div id="mainContainer" style="width:100%; display:flex; justify-content:center; align-items:flex-start; flex-direction: column;">
+            <div id="emptyState" class="text-center" style="padding: 50px; color: #999; width:100%;">
+                <p>正在加载数据...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ==========================================
+    // 1. 静态数据配置 (新增：图片配置区)
+    // ==========================================
+    
+    // 📌 图片地址映射表（已为您生成 d1 到 d38 的全部占位）
+    // 格式：'设备ID': '图片直链地址' (可以直接用GitHub raw链接)
+    const imageMap = {
+        "d1": "",
+        "d2": "",
+        "d3": "",
+        "d4": "",
+        "d5": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/BD1.jpg",
+        "d6": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/BD2.jpg",
+        "d7": "",
+        "d8": "",
+        "d9": "",
+        "d10": "",
+        "d11": "",
+        "d12": "",
+        "d13": "",
+        "d14": "",
+        "d15": "",
+        "d16": "",
+        "d17": "",
+        "d18": "",
+        "d19": "",
+        "d20": "",
+        "d21": "",
+        "d22": "",
+        "d23": "",
+        "d24": "",
+        "d25": "",
+        "d26": "",
+        "d27": "",
+        "d28": "",
+        "d29": "",
+        "d30": "",
+        "d31": "",
+        "d32": "",
+        "d33": "",
+        "d34": "",
+        "d35": "",
+        "d36": "",
+        "d37": "",
+        "d38": ""
+    };
+
+    // 📌 PDF地址映射表 (键=纯文件名，值=GitHub直链)
+    const pdfMap = {
+        "WNII-NI-ZY-044-2025 电除尘操作作业指导书 PT WNII NI Prosedur Pengoperasian ESP.pdf": "",
+        "WNII-NI-ZY-046-2025 布袋除尘操作作业指导书 PT WNII NI Prosedur Kerja Inspeksi Bag House ESP.pdf": "",
+        "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf": "",
+        "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf": "",
+        "WNII-NI-ZY-045-2025 除尘皮带操作作业指导书 PT WNII NI Prosedur Pengoperasian Conveyor Debu Kasar Divisi ESP.pdf": "",
+        "WNII-NI-ZY-053-2025 电除尘尾排风机检修作业指导书 PT WNII NI Prosedur Pemeriksaan dan Perbaikan Tailing Fan Divisi ESP.pdf": "https://github.com/q675832760-commits/q675832760-commits.github.io/raw/main/WNII-NI-ZY-053-2025%20%E7%94%B5%E9%99%A4%E5%B0%98%E5%B0%BE%E6%8E%92%E9%A3%8E%E6%9C%BA%E6%A3%80%E4%BF%AE%E4%BD%9C%E4%B8%9A%E6%8C%87%E5%AF%BC%E4%B9%A6%20PT%20WNII%20NI%20Prosedur%20Pemeriksaan%20dan%20Perbaikan%20Tailing%20Fan%20Divisi%20ESP.pdf"
+    };
+
+    // 完全硬编码的静态数据
+    const STATIC_GROUPS = [
+        {
+            "id": "g1",
+            "name": "ESP 电除尘器",
+            "devices": [
+                {
+                    "id": "d1",
+                    "title": "37#ESP 电除尘器",
+                    "meta": [
+                        { "label": "Spesifikasi          设备型号", "value": "Q235" },
+                        { "label": "Nomor Peralatan 设备编号", "value": "WNII-NI-SC-DCC-SCQ-001" },
+                        { "label": "Voltage Secondary       额定电压", "value": "72KV" },
+                        { "label": "Volume Pengiriman        处理风量", "value": "700000m³/H" }
+                    ],
+                    "manualName": "WNII-NI-ZY-044-2025 电除尘操作作业指导书 PT WNII NI Prosedur Pengoperasian ESP.pdf",
+                    "manualSize": "1831.20 KB"
+                },
+                {
+                    "id": "d2",
+                    "title": "38#ESP 电除尘器",
+                    "meta": [
+                        { "label": "Spesifikasi         设备型号", "value": "Q235" },
+                        { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-SCQ-002" },
+                        { "label": "Voltage Secondary         额定电压", "value": "72KV" },
+                        { "label": "Volume Pengiriman       处理风量", "value": "700000m³/H" }
+                    ],
+                    "manualName": "WNII-NI-ZY-044-2025 电除尘操作作业指导书 PT WNII NI Prosedur Pengoperasian ESP.pdf",
+                    "manualSize": "1831.20 KB"
+                },
+                {
+                    "id": "d3",
+                    "title": "39#ESP 电除尘器",
+                    "meta": [
+                        { "label": "Spesifikasi         设备型号", "value": "Q235" },
+                        { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-SCQ-003" },
+                        { "label": "Voltage Secondary         额定电压", "value": "72KV" },
+                        { "label": "Volume Pengiriman       处理风量", "value": "700000m³/H" }
+                    ],
+                    "manualName": "WNII-NI-ZY-044-2025 电除尘操作作业指导书 PT WNII NI Prosedur Pengoperasian ESP.pdf",
+                    "manualSize": "1831.20 KB"
+                },
+                {
+                    "id": "d4",
+                    "title": "40#ESP 电除尘器",
+                    "meta": [
+                        { "label": "Spesifikasi         设备型号", "value": "Q235" },
+                        { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-SCQ-004" },
+                        { "label": "Voltage Secondary         额定电压", "value": "72KV" },
+                        { "label": "Volume Pengiriman       处理风量", "value": "700000m³/H" }
+                    ],
+                    "manualName": "WNII-NI-ZY-044-2025 电除尘操作作业指导书 PT WNII NI Prosedur Pengoperasian ESP.pdf",
+                    "manualSize": "1831.20 KB"
+                }
+            ]
+        },
+        {
+            "id": "g2",
+            "name": "BUDAI 布袋除尘器",
+            "devices": [
+                {
+                    "id": "d5",
+                    "title": "1#BUDAI 布袋除尘器",
+                    "meta": [
+                        { "label": "Spesifikasi         设备型号", "value": "ZD-PPCSM128-2*18" },
+                        { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-BD-001" },
+                        { "label": "Tekanan Diferensial         负压阻力", "value": "＜1700 PA" },
+                        { "label": "Volume Pengiriman       处理风量", "value": "360000m³/H" }
+                    ],
+                    "manualName": "WNII-NI-ZY-046-2025 布袋除尘操作作业指导书 PT WNII NI Prosedur Kerja Inspeksi Bag House ESP.pdf",
+                    "manualSize": "1882.54 KB"
+                },
+                {
+                    "id": "d6",
+                    "title": "2#BUDAI 布袋除尘器",
+                    "meta": [
+                        { "label": "Spesifikasi         设备型号", "value": "ZD-PPCSM128-2*18" },
+                        { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-BD-002" },
+                        { "label": "Tekanan Diferensial         负压阻力", "value": "＜1700 PA" },
+                        { "label": "Volume Pengiriman       处理风量", "value": "360000m³/H" }
+                    ],
+                    "manualName": "WNII-NI-ZY-046-2025 布袋除尘操作作业指导书 PT WNII NI Prosedur Kerja Inspeksi Bag House ESP.pdf",
+                    "manualSize": "1882.54 KB"
+                },
+                {
+                    "id": "d7",
+                    "title": "3#BUDAI 布袋除尘器",
+                    "meta": [
+                        { "label": "Spesifikasi         设备型号", "value": "ZD-PPCSM128-2*18" },
+                        { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-BD-003" },
+                        { "label": "Tekanan Diferensial         负压阻力", "value": "＜1200 PA" },
+                        { "label": "Volume Pengiriman       处理风量", "value": "400000m³/H" }
+                    ],
+                    "manualName": "WNII-NI-ZY-046-2025 布袋除尘操作作业指导书 PT WNII NI Prosedur Kerja Inspeksi Bag House ESP.pdf",
+                    "manualSize": "1882.54 KB"
+                }
+            ]
+        },
+        {
+            "id": "g3",
+            "name": "SCRAPER 刮板机",
+            "devices": [
+                { "id": "d8", "title": "37#A SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "FU350" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-003" }, { "label": "Daya Motor      电机功率", "value": "15KW" }, { "label": "Volume Pengiriman       输送量", "value": "80m³/H" }], "manualName": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "manualSize": "3674.17 KB" },
+                { "id": "d9", "title": "37#B SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "FU350" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-004" }, { "label": "Daya Motor      电机功率", "value": "15KW" }, { "label": "Volume Pengiriman       输送量", "value": "80m³/H" }], "manualName": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "manualSize": "3674.17 KB" },
+                { "id": "d10", "title": "38#A SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "FU350" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-005" }, { "label": "Daya Motor      电机功率", "value": "15KW" }, { "label": "Volume Pengiriman       输送量", "value": "80m³/H" }], "manualName": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "manualSize": "3674.17 KB" },
+                { "id": "d11", "title": "38#B SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "FU350" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-006" }, { "label": "Daya Motor      电机功率", "value": "15KW" }, { "label": "Volume Pengiriman       输送量", "value": "80m³/H" }], "manualName": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "manualSize": "3674.17 KB" },
+                { "id": "d12", "title": "39#A SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "FU350" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-007" }, { "label": "Daya Motor      电机功率", "value": "15KW" }, { "label": "Volume Pengiriman       输送量", "value": "80m³/H" }], "manualName": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "manualSize": "3674.17 KB" },
+                { "id": "d13", "title": "39#B SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "FU350" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-008" }, { "label": "Daya Motor      电机功率", "value": "15KW" }, { "label": "Volume Pengiriman       输送量", "value": "80m³/H" }], "manualName": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "manualSize": "3674.17 KB" },
+                { "id": "d14", "title": "40#A SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "FU350" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-009" }, { "label": "Daya Motor      电机功率", "value": "15KW" }, { "label": "Volume Pengiriman       输送量", "value": "80m³/H" }], "manualName": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "manualSize": "3674.17 KB" },
+                { "id": "d15", "title": "40#B SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "FU350" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-010" }, { "label": "Daya Motor      电机功率", "value": "15KW" }, { "label": "Volume Pengiriman       输送量", "value": "40m³/H" }], "manualName": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "manualSize": "3674.17 KB" },
+                { "id": "d16", "title": "1#A SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "FU200" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-001" }, { "label": "Daya Motor      电机功率", "value": "11KW" }, { "label": "Volume Pengiriman       输送量", "value": "40m³/H" }], "manualName": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "manualSize": "3674.17 KB" },
+                { "id": "d17", "title": "1#B SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "FU200" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-002" }, { "label": "Daya Motor      电机功率", "value": "11KW" }, { "label": "Volume Pengiriman       输送量", "value": "40m³/H" }], "manualName": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "manualSize": "3674.17 KB" },
+                { "id": "d18", "title": "2#A SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "FU200" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-011" }, { "label": "Daya Motor      电机功率", "value": "11KW" }, { "label": "Volume Pengiriman       输送量", "value": "40m³/H" }], "manualName": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "manualSize": "3674.17 KB" },
+                { "id": "d19", "title": "2#B SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "FU150" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-012" }, { "label": "Daya Motor      电机功率", "value": "4KW" }, { "label": "Volume Pengiriman       输送量", "value": "23m³/H" }], "manualName": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "manualSize": "3674.17 KB" },
+                { "id": "d20", "title": "3#A SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "FU150" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-013" }, { "label": "Daya Motor      电机功率", "value": "4KW" }, { "label": "Volume Pengiriman       输送量", "value": "23m³/H" }], "manualName": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "manualSize": "3674.17 KB" },
+                { "id": "d21", "title": "3#B SCRAPER 刮板机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "FU150" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-GBJ-014" }, { "label": "Daya Motor      电机功率", "value": "4KW" }, { "label": "Volume Pengiriman       输送量", "value": "23m³/H" }], "manualName": "WNII-NI-ZY-049-2025 电除尘刮板机检修作业指导书 PT WNII NI Prosedur Perbaikan Mesin Scraper ESP.pdf", "manualSize": "3674.17 KB" }
+            ]
+        },
+        {
+            "id": "g4",
+            "name": "Pugmill 加湿机",
+            "devices": [
+                { "id": "d22", "title": "1#-1Pugmill 加湿机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-001" }, { "label": "Daya Motor      电机功率", "value": "22KW" }, { "label": "Volume Pengiriman       输送量", "value": "80m³/H" }], "manualName": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "manualSize": "4205.61 KB" },
+                { "id": "d23", "title": "1#-2Pugmill 加湿机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-002" }, { "label": "Daya Motor      电机功率", "value": "22KW" }, { "label": "Volume Pengiriman       输送量", "value": "80m³/H" }], "manualName": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "manualSize": "4205.61 KB" },
+                { "id": "d24", "title": "1#-3Pugmill 加湿机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-003" }, { "label": "Daya Motor      电机功率", "value": "22KW" }, { "label": "Volume Pengiriman       输送量", "value": "80m³/H" }], "manualName": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "manualSize": "4205.61 KB" },
+                { "id": "d25", "title": "2#-1Pugmill 加湿机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-004" }, { "label": "Daya Motor      电机功率", "value": "22KW" }, { "label": "Volume Pengiriman       输送量", "value": "80m³/H" }], "manualName": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "manualSize": "4205.61 KB" },
+                { "id": "d26", "title": "2#-2Pugmill 加湿机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-005" }, { "label": "Daya Motor      电机功率", "value": "22KW" }, { "label": "Volume Pengiriman       输送量", "value": "80m³/H" }], "manualName": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "manualSize": "4205.61 KB" },
+                { "id": "d27", "title": "2#-3Pugmill 加湿机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "SJS80" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-JSG-006" }, { "label": "Daya Motor      电机功率", "value": "22KW" }, { "label": "Volume Pengiriman       输送量", "value": "80m³/H" }], "manualName": "WNII-NI-ZY-050-2025 印尼华新镍业有限公司镍铁厂电除尘加湿机检修作业指导书 PT WNII NI Prosedur Perbaikan Pugmil ESP.pdf", "manualSize": "4205.61 KB" }
+            ]
+        },
+        {
+            "id": "g5",
+            "name": "Conveyor 皮带机",
+            "devices": [
+                { "id": "d28", "title": "37#Conveyor 皮带机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "DTIIA-800mm*35m" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-PDG-001" }, { "label": "Daya Motor      电机功率", "value": "7.5KW" }, { "label": "Volume Pengiriman       输送量", "value": "400T/H" }], "manualName": "WNII-NI-ZY-045-2025 除尘皮带操作作业指导书 PT WNII NI Prosedur Pengoperasian Conveyor Debu Kasar Divisi ESP.pdf", "manualSize": "3424.62 KB" },
+                { "id": "d29", "title": "38#Conveyor 皮带机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "DTIIA-800mm*35m" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-PDG-002" }, { "label": "Daya Motor      电机功率", "value": "7.5KW" }, { "label": "Volume Pengiriman       输送量", "value": "400T/H" }], "manualName": "WNII-NI-ZY-045-2025 除尘皮带操作作业指导书 PT WNII NI Prosedur Pengoperasian Conveyor Debu Kasar Divisi ESP.pdf", "manualSize": "3424.62 KB" },
+                { "id": "d30", "title": "39#Conveyor 皮带机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "DTIIA-800mm*35m" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-PDG-003" }, { "label": "Daya Motor      电机功率", "value": "7.5KW" }, { "label": "Volume Pengiriman       输送量", "value": "400T/H" }], "manualName": "WNII-NI-ZY-045-2025 除尘皮带操作作业指导书 PT WNII NI Prosedur Pengoperasian Conveyor Debu Kasar Divisi ESP.pdf", "manualSize": "3424.62 KB" },
+                { "id": "d31", "title": "40#Conveyor 皮带机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "DTIIA-800mm*35m" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-PDG-004" }, { "label": "Daya Motor      电机功率", "value": "7.5KW" }, { "label": "Volume Pengiriman       输送量", "value": "400T/H" }], "manualName": "WNII-NI-ZY-045-2025 除尘皮带操作作业指导书 PT WNII NI Prosedur Pengoperasian Conveyor Debu Kasar Divisi ESP.pdf", "manualSize": "3424.62 KB" }
+            ]
+        },
+        {
+            "id": "g6",
+            "name": "Ceiling Fan 尾排风机",
+            "devices": [
+                { "id": "d32", "title": "37#Ceiling Fan 尾排风机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "Y4-2X73-14 旋向L" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-WPFJ-002" }, { "label": "Daya Motor      电机功率", "value": "1400KW" }, { "label": "Volume Pengiriman       流量容积", "value": "720000m³/H" }], "manualName": "WNII-NI-ZY-053-2025 电除尘尾排风机检修作业指导书 PT WNII NI Prosedur Pemeriksaan dan Perbaikan Tailing Fan Divisi ESP.pdf", "manualSize": "4472.70 KB" },
+                { "id": "d33", "title": "38#Ceiling Fan 尾排风机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "Y4-2X73-14 旋向R" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-WPFJ-003" }, { "label": "Daya Motor      电机功率", "value": "1400KW" }, { "label": "Volume Pengiriman       流量容积", "value": "720000m³/H" }], "manualName": "WNII-NI-ZY-053-2025 电除尘尾排风机检修作业指导书 PT WNII NI Prosedur Pemeriksaan dan Perbaikan Tailing Fan Divisi ESP.pdf", "manualSize": "4472.70 KB" },
+                { "id": "d34", "title": "39#Ceiling Fan 尾排风机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "Y4-2X73-14 旋向L" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-WPFJ-004" }, { "label": "Daya Motor      电机功率", "value": "1400KW" }, { "label": "Volume Pengiriman       流量容积", "value": "720000m³/H" }], "manualName": "WNII-NI-ZY-053-2025 电除尘尾排风机检修作业指导书 PT WNII NI Prosedur Pemeriksaan dan Perbaikan Tailing Fan Divisi ESP.pdf", "manualSize": "4472.70 KB" },
+                { "id": "d35", "title": "40#Ceiling Fan 尾排风机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "Y4-2X73-14 旋向R" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-WPFJ-005" }, { "label": "Daya Motor      电机功率", "value": "1400KW" }, { "label": "Volume Pengiriman       流量容积", "value": "720000m³/H" }], "manualName": "WNII-NI-ZY-053-2025 电除尘尾排风机检修作业指导书 PT WNII NI Prosedur Pemeriksaan dan Perbaikan Tailing Fan Divisi ESP.pdf", "manualSize": "4472.70 KB" },
+                { "id": "d36", "title": "1#BUDAI Ceiling Fan 布袋尾排风机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "Y5-2X55 23.5F 旋向L" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-WPFJ-001" }, { "label": "Daya Motor      电机功率", "value": "1400KW" }, { "label": "Volume Pengiriman       流量容积", "value": "700000m³/H" }], "manualName": "WNII-NI-ZY-053-2025 电除尘尾排风机检修作业指导书 PT WNII NI Prosedur Pemeriksaan dan Perbaikan Tailing Fan Divisi ESP.pdf", "manualSize": "4472.70 KB" },
+                { "id": "d37", "title": "2#BUDAI Ceiling Fan 布袋尾排风机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "Y5-2X55 23.5F 旋向R" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-WPFJ-006" }, { "label": "Daya Motor      电机功率", "value": "1400KW" }, { "label": "Volume Pengiriman       流量容积", "value": "700000m³/H" }], "manualName": "WNII-NI-ZY-053-2025 电除尘尾排风机检修作业指导书 PT WNII NI Prosedur Pemeriksaan dan Perbaikan Tailing Fan Divisi ESP.pdf", "manualSize": "4472.70 KB" },
+                { "id": "d38", "title": "3#BUDAI Ceiling Fan 布袋尾排风机", "meta": [{ "label": "Spesifikasi         设备型号", "value": "VZ65III-2240 F/S3" }, { "label": "Nomor Peralatan设备编号", "value": "WNII-NI-SC-DCC-WPFJ-007" }, { "label": "Daya Motor      电机功率", "value": "1000KW" }, { "label": "Volume Pengiriman       流量容积", "value": "500000m³/H" }], "manualName": "WNII-NI-ZY-053-2025 电除尘尾排风机检修作业指导书 PT WNII NI Prosedur Pemeriksaan dan Perbaikan Tailing Fan Divisi ESP.pdf", "manualSize": "4472.70 KB" }
+            ]
+        }
+    ];
+
+    // ==========================================
+    // 2. 纯渲染逻辑 (完全静态)
+    // ==========================================
+    let groups = STATIC_GROUPS;
+    let currentGroupId = null;
+    let currentDeviceId = null;
+
+    function getGroup(id) { return groups.find(g => g.id === id); }
+    function getDevice(groupId, deviceId) {
+        const group = getGroup(groupId);
+        if (!group) return null;
+        return group.devices.find(d => d.id === deviceId);
+    }
+    function getCurrentDevice() {
+        if (!currentGroupId || !currentDeviceId) return null;
+        return getDevice(currentGroupId, currentDeviceId);
+    }
+
+    function renderAll() {
+        renderSidebar();
+        renderDashboard();
+        renderMainContent();
+    }
+
+    function renderDashboard() {
+        let totalDevices = 0;
+        groups.forEach(g => totalDevices += (g.devices ? g.devices.length : 0));
+        document.getElementById('totalDevices').innerText = totalDevices;
+    }
+
+    function renderSidebar() {
+        const list = document.getElementById('groupList');
+        list.innerHTML = '';
+        groups.forEach(group => {
+            const li = document.createElement('li');
+            li.className = `group-item ${group.id === currentGroupId ? 'active' : ''}`;
+            const subCount = group.devices ? group.devices.length : 0;
+            li.innerHTML = `
+                <div onclick="selectGroup('${group.id}')" class="info">
+                    <div class="name">${group.name || '未命名组'}</div>
+                    <div class="sub-count">${subCount} 台设备</div>
+                </div>
+            `;
+            list.appendChild(li);
+        });
+    }
+
+    function renderMainContent() {
+        const container = document.getElementById('mainContainer');
+        if (currentGroupId && currentDeviceId) {
+            renderDeviceDetail(container);
+            return;
+        }
+        if (currentGroupId) {
+            renderGroupDetail(container);
+            return;
+        }
+        container.innerHTML = `<div class="text-center" style="padding: 50px; color: #999; width:100%;"><p>请从左侧选择一个设备组查看详情。</p></div>`;
+    }
+
+    function renderGroupDetail(container) {
+        const group = getGroup(currentGroupId);
+        if (!group) { currentGroupId = null; renderAll(); return; }
+        const devices = group.devices || [];
+
+        container.innerHTML = `
+            <div class="group-detail-container">
+                <div class="group-detail-header">
+                    <h2>${group.name}</h2>
+                </div>
+                <div class="sub-device-section">
+                    <div class="section-title">
+                        <span>下属设备 (${devices.length})</span>
+                    </div>
+                    <ul class="sub-device-list">
+                        ${devices.length === 0 ? '<div class="text-center" style="padding: 20px; color: #999;">该组暂无设备</div>' : ''}
+                        ${devices.map(device => `
+                            <li class="sub-device-item">
+                                <div onclick="selectDevice('${group.id}', '${device.id}')" class="info">
+                                    <div class="name">${device.title || '未命名'}</div>
+                                    <div class="code">${device.meta.find(m => m.label === 'Nomor Peralatan设备编号')?.value || '无编号'}</div>
+                                </div>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderDeviceDetail(container) {
+        const device = getCurrentDevice();
+        if (!device) { currentDeviceId = null; renderAll(); return; }
+
+        const sectionsHtml = [];
+        sectionsHtml.push(`
+            <div class="section">
+                <div class="section-title">设备信息</div>
+                ${device.meta.map((field) => `
+                    <div class="info-row">
+                        <div class="info-label">${field.label}</div>
+                        <div class="info-value">${field.value}</div>
+                    </div>
+                `).join('')}
+            </div>
+        `);
+
+        // 处理说明书
+        const hasManual = device.manualName;
+        const pdfUrl = pdfMap[device.manualName] || ''; // 从配置映射表取地址
+
+        sectionsHtml.push(`
+            <div class="section">
+                <div class="section-title">操作说明书</div>
+                <div id="fileSection">
+                    ${hasManual ? `
+                        <div class="file-card">
+                            <div class="file-icon">PDF</div>
+                            <div class="file-info">
+                                <div class="file-name">${device.manualName}</div>
+                                <div class="file-size">${device.manualSize}</div>
+                            </div>
+                            <div class="file-actions">
+                                ${pdfUrl ? `
+                                    <button class="btn-file" onclick="previewFile('${pdfUrl}')">预览</button>
+                                    <button class="btn-file" onclick="downloadFile('${pdfUrl}', '${device.manualName}')">下载</button>
+                                ` : `
+                                    <span style="color:#999; font-size:12px;">请配置 pdfMap 中的 URL</span>
+                                `}
+                            </div>
+                        </div>
+                    ` : `
+                        <div style="border:dashed 2px #ddd; padding:20px; text-align:center; color:#999; border-radius:8px;">暂无操作说明书</div>
+                    `}
+                </div>
+            </div>
+        `);
+
+        // 🔥 新增图片展示代码
+        const imgUrl = imageMap[device.id] || '';
+
+        container.innerHTML = `
+            <div class="detail-container">
+                <div class="detail-header">
+                    <button class="back-to-group-btn" onclick="goBackToGroup()">← 返回设备组</button>
+                    <h2>${device.title}</h2>
+                </div>
+                <div class="device-main-img">
+                    ${imgUrl ? `<img src="${imgUrl}" alt="${device.title}">` : `<span>暂无图片</span>`}
+                </div>
+                ${sectionsHtml.join('')}
+            </div>
+        `;
+    }
+
+    // ==========================================
+    // 3. 交互与文件预览/下载
+    // ==========================================
+    function selectGroup(id) { currentGroupId = id; currentDeviceId = null; renderAll(); }
+    function selectDevice(groupId, deviceId) { currentGroupId = groupId; currentDeviceId = deviceId; renderAll(); }
+    function goBackToGroup() { currentDeviceId = null; renderAll(); }
+
+    function previewFile(url) {
+        if (!url) return alert("请先在代码顶部的 pdfMap 中填入正确的 PDF 网络地址！");
+        const win = window.open();
+        win.document.write(`<iframe src="${url}" width="100%" height="100%" style="border:none;"></iframe>`);
+    }
+
+    function downloadFile(url, fileName) {
+        if (!url) return alert("请先在代码顶部的 pdfMap 中填入正确的 PDF 网络地址！");
+        const a = document.createElement('a');
+        a.href = url; a.download = fileName; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    }
+
+    // ==========================================
+    // 4. 启动应用
+    // ==========================================
+    renderAll();
+</script>
+</body>
+</html>
